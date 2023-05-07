@@ -1,18 +1,19 @@
-import api from "api/users_API.js";
+import api from "./api/users_API.js";
 
 let ws = {
     async showAll(searchInputTxt) {
+        console.log(searchInputTxt);
         const data = await api.getData(searchInputTxt);
         let html = ``;
-        data.meals.forEach(element => {
-            const { idMeal, strMealThumb, strMeal } = element;
+        data.cliente.forEach(element => {
+            const { id, nombre, edad } = element;
             html += `
-            <div class="item" data-id = "${idMeal}">
+            <div class="item" data-id = "${id}">
                 <div class="img">
-                    <img src = "${strMealThumb}" alt = "food">
+                    <p>${nombre}</p>
                 </div>
                 <div class="content">
-                    <div class="title">${strMeal}</div>
+                    <div class="title">${edad}</div>
                     <div class="des">
                         Lorem ipsum dolor sit amet consectetur
                         adipisicing elit. Repellendus, minus.
@@ -49,5 +50,6 @@ let ws = {
 }
 
 self.addEventListener("message", (e) => {
+    console.log("Hola");
     Promise.resolve(ws[`${e.data.accion}`]((e.data.body) ? e.data.body : undefined)).then(res => postMessage(res));
 })

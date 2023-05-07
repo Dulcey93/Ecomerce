@@ -15,17 +15,26 @@ export default class MyHeader extends HTMLElement {
     }
 
     sendMessage(e) {
-        console.log(e.target);
-        e.target.classList.add('active-popup');
+        e.preventDefault();
+        /* const searchInputTxt = this.shadowRoot.querySelector(".search-input").value.trim(); */
+        const crud = document.querySelector(".crud");
+        const searchInputTxt = 'Hola soy el input';
+        const all = new Worker("src/workers/ws.js", { type: "module" });
+        all.postMessage({ accion: "showAll", body: searchInputTxt });
+
+        all.addEventListener("message", (e) => {
+            /* crud.append([...e.data]); */
+            console.log("Hola");
+            all.terminate()
+        });
     }
 
     connectedCallback() {
         Promise.resolve(MyHeader.components()).then(html => {
             this.shadowRoot.innerHTML = html;
             this.btnPopUp = this.shadowRoot.querySelector(".btnLoging-popup");
-            const wrapper = document.querySelector(".wrapper");
 
-            this.btnPopUp.addEventListener("click", this.handleEvent.bind(wrapper));
+            this.btnPopUp.addEventListener("click", this.handleEvent.bind(this));
         });
     }
 

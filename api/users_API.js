@@ -1,7 +1,8 @@
 let url = 'http://localhost:3004/cliente'
 
 export default {
-    async getData() {
+    async getData(searchInputTxt) {
+        console.log(searchInputTxt);
         let data = await (await fetch(url, {
             method: 'GET',
             headers: {
